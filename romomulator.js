@@ -43,13 +43,27 @@ var Romo = {
   rotate: function( degrees ) {
     this.queue.push({ rotate: degrees });
   },
+
+  scrotate: function( degrees ) {
+    var sdeg = degrees / 5;
+    for ( i=0; i < sdeg ; i++) {
+      this.rotate( 5 );
+      this.move( 7 );
+/*      if ( i % 2 ) {
+        this.move( 5 );
+      } else {
+        this.move( -5 );
+      }
+*/
+    }
+  },
   
   move: function( distance ) {
     this.queue.push({ move: distance });
   },
   
   taskComplete: function() {
-    this.current_task = null;    
+    this.current_task = null;
   },
   
   chalkLine: function() {
@@ -71,7 +85,6 @@ var Romo = {
         if ( this.current_task.move ) {
           this.end_x = Math.round( this.x + this.current_task.move * Math.sin( this.rotation / 180 * Math.PI ) );
           this.end_y = Math.round( this.y - this.current_task.move * Math.cos( this.rotation / 180 * Math.PI ) );
-/*          console.log('Move from: ' + this.x + ', ' + this.y + ' to ' + this.end_x + ', ' + this.end_y );*/
         }
       }
     }
@@ -141,7 +154,6 @@ var Romo = {
 
       // Move checked
       if ( !moved ) {
-/*        console.log('Move complete');*/
         this.taskComplete();        
       } else {
         this.move_step( this.x, this.y );
@@ -171,24 +183,20 @@ var Romo = {
 $(document).ready(function() {
   
   Romo.control( '#romo' );
-  
-  Romo.rotate( 360 );
-  
-  Romo.move( 50 );
-    
-  Romo.rotate( 45 );
+      
+  Romo.scrotate( 45 );
   Romo.move( 150 );
 
-  Romo.rotate( 90 );
+  Romo.scrotate( 90 );
   Romo.move( 150 );
 
-  Romo.rotate( 90 );
+  Romo.scrotate( 90 );
   Romo.move( 150 );
 
-  Romo.rotate( 90 );
+  Romo.scrotate( 90 );
   Romo.move( 150 );
   
-  Romo.rotate( 45 );
+  Romo.scrotate( 45 );
 
   // Back where we started from!
   
