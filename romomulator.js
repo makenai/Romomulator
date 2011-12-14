@@ -4,9 +4,9 @@ var Romo = {
   // Constants
   // =========
 
-  TICK: 100,          // update every TICK milliseconds
-  SPEED: 30,          // cm per second
-  ROTATION_SPEED: 5, // degrees per second
+  TICK: 50,          // update every TICK milliseconds
+  SPEED: 60,          // cm per second
+  ROTATION_SPEED: 7, // degrees per second
 
   // ==================
   // Instance Variables
@@ -28,7 +28,16 @@ var Romo = {
     this.romo = $(romo_selector);
     this.rotate_step( this.rotation );
     this.move_step( this.x, this.y );
-    this.updatePosition();
+    
+    this.canvas = $('#field')[0].getContext('2d');
+
+    // Load up our brush
+    this.brush  = new Image();
+    this.brush.src = 'brush.png';
+    
+    $(this.brush).load(function() {
+      Romo.updatePosition();
+    });    
   },
    
   rotate: function( degrees ) {
@@ -41,6 +50,12 @@ var Romo = {
   
   taskComplete: function() {
     this.current_task = null;    
+  },
+  
+  chalkLine: function() {
+    var xOff = -60  * Math.sin( this.rotation / 180 * Math.PI );
+    var yOff = 60 * Math.cos( this.rotation / 180 * Math.PI );
+    this.canvas.drawImage( this.brush, this.x + xOff - 8, this.y + yOff - 8 );
   },
   
   updatePosition: function() {
@@ -56,7 +71,7 @@ var Romo = {
         if ( this.current_task.move ) {
           this.end_x = Math.round( this.x + this.current_task.move * Math.sin( this.rotation / 180 * Math.PI ) );
           this.end_y = Math.round( this.y - this.current_task.move * Math.cos( this.rotation / 180 * Math.PI ) );
-          console.log('Move from: ' + this.x + ', ' + this.y + ' to ' + this.end_x + ', ' + this.end_y );
+/*          console.log('Move from: ' + this.x + ', ' + this.y + ' to ' + this.end_x + ', ' + this.end_y );*/
         }
       }
     }
@@ -126,13 +141,15 @@ var Romo = {
 
       // Move checked
       if ( !moved ) {
-        console.log('Move complete');
+/*        console.log('Move complete');*/
         this.taskComplete();        
       } else {
         this.move_step( this.x, this.y );
       }
-
     }
+    
+    // Always be chalking
+    this.chalkLine();
 
     // Always be updating
     setTimeout( function() { Romo.updatePosition() }, Romo.TICK );
@@ -154,22 +171,24 @@ var Romo = {
 $(document).ready(function() {
   
   Romo.control( '#romo' );
+  
+  Romo.rotate( 360 );
+  
+  Romo.move( 50 );
     
   Romo.rotate( 45 );
-  Romo.move( 50 );
+  Romo.move( 150 );
 
   Romo.rotate( 90 );
-  Romo.move( 50 );
+  Romo.move( 150 );
 
   Romo.rotate( 90 );
-  Romo.move( 50 );
+  Romo.move( 150 );
 
   Romo.rotate( 90 );
-  Romo.move( 50 );
+  Romo.move( 150 );
   
   Romo.rotate( 45 );
-  
-  Romo.move( -50 );
 
   // Back where we started from!
   
