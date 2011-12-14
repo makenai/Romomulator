@@ -89,9 +89,9 @@ var Romo = {
           y_distance = this.end_y - this.y;
           
       var moveBy = this.SPEED * ( this.TICK / 1000 ),
-        moveX = Math.round( moveBy * Math.sin( this.rotation / 180 * Math.PI ) ),
-        moveY = Math.round( moveBy * Math.cos( this.rotation / 180 * Math.PI ) );
-
+        moveX = Math.abs( moveBy * Math.sin( this.rotation / 180 * Math.PI ) ),
+        moveY = Math.abs( moveBy * Math.cos( this.rotation / 180 * Math.PI ) );
+        
       if ( Math.abs( x_distance ) > 0 ) {
         if ( x_distance > 0 ) {
           this.x += moveX;  
@@ -154,12 +154,8 @@ var Romo = {
 $(document).ready(function() {
   
   Romo.control( '#romo' );
-
-  Romo.rotate( 30 );
-  Romo.move( 50 );
-
     
-/*  Romo.rotate( 45 );
+  Romo.rotate( 45 );
   Romo.move( 50 );
 
   Romo.rotate( 90 );
@@ -171,7 +167,9 @@ $(document).ready(function() {
   Romo.rotate( 90 );
   Romo.move( 50 );
   
-  Romo.rotate( 45 );*/
+  Romo.rotate( 45 );
+  
+  Romo.move( -50 );
 
   // Back where we started from!
   
