@@ -4,7 +4,7 @@ var Romo = {
   // Constants
   // =========
 
-  TICK: 50,          // update every TICK milliseconds
+  TICK: 10,          // update every TICK milliseconds
   SPEED: 60,          // cm per second
   ROTATION_SPEED: 7, // degrees per second
 
@@ -12,8 +12,8 @@ var Romo = {
   // Instance Variables
   // ==================
   
-  x: 250,
-  y: 250,
+  x: 50,
+  y: 50,
   end_x: 0,
   end_y: 0,
 
@@ -43,20 +43,6 @@ var Romo = {
   rotate: function( degrees ) {
     this.queue.push({ rotate: degrees });
   },
-
-  scrotate: function( degrees ) {
-    var sdeg = degrees / 5;
-    for ( i=0; i < sdeg ; i++) {
-      this.rotate( 5 );
-      this.move( 7 );
-/*      if ( i % 2 ) {
-        this.move( 5 );
-      } else {
-        this.move( -5 );
-      }
-*/
-    }
-  },
   
   move: function( distance ) {
     this.queue.push({ move: distance });
@@ -69,7 +55,8 @@ var Romo = {
   chalkLine: function() {
     var xOff = -60  * Math.sin( this.rotation / 180 * Math.PI );
     var yOff = 60 * Math.cos( this.rotation / 180 * Math.PI );
-    this.canvas.drawImage( this.brush, this.x + xOff - 8, this.y + yOff - 8 );
+/*    this.canvas.drawImage( this.brush, this.x + xOff - 8, this.y + yOff - 8 );*/
+    this.canvas.drawImage( this.brush, this.x - 8, this.y - 8 );
   },
   
   updatePosition: function() {
@@ -79,7 +66,7 @@ var Romo = {
       if ( this.current_task = this.queue.shift() ) {
         // Cumulate rotation
         if ( this.current_task.rotate ) {
-          this.end_rotation = this.rotation + this.current_task.rotate;
+          this.end_rotation = ( this.rotation + this.current_task.rotate ) % 360;
         }
         // Set destination
         if ( this.current_task.move ) {
@@ -179,25 +166,3 @@ var Romo = {
   }
   
 };
-
-$(document).ready(function() {
-  
-  Romo.control( '#romo' );
-      
-  Romo.scrotate( 45 );
-  Romo.move( 150 );
-
-  Romo.scrotate( 90 );
-  Romo.move( 150 );
-
-  Romo.scrotate( 90 );
-  Romo.move( 150 );
-
-  Romo.scrotate( 90 );
-  Romo.move( 150 );
-  
-  Romo.scrotate( 45 );
-
-  // Back where we started from!
-  
-});
